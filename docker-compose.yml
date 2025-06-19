@@ -1,26 +1,24 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: credits_mysql
+  postgres:
+    image: postgres:15
+    container_name: credits_postgres
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: credits_db
-      MYSQL_USER: credits_user
-      MYSQL_PASSWORD: credits_password
+      POSTGRES_DB: credits_db
+      POSTGRES_USER: credits_user
+      POSTGRES_PASSWORD: credits_password
+      POSTGRES_ROOT_PASSWORD: rootpassword
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
-      - ./mysql/init:/docker-entrypoint-initdb.d
-    command: --default-authentication-plugin=mysql_native_password
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - credits_network
 
 volumes:
-  mysql_data:
+  postgres_data:
     driver: local
 
 networks:

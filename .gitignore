@@ -114,7 +114,6 @@ temp/
 *.db
 
 # Sequelize
-config/database.js
 config/config.json
 
 # Uploads

@@ -1,27 +1,43 @@
-const { sequelize, testConnection } = require('../models/index');
+const { Client } = require('pg');
+require('dotenv').config();
 
-const initDatabase = async () => {
+async function initDatabase() {
+  const client = new Client({
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 5432,
+    user: process.env.DB_USER || 'credits_user',
+    password: process.env.DB_PASSWORD || 'credits_password',
+    database: 'postgres', // Connect to default postgres database first
+  });
+
   try {
-    // Test connection
-    await testConnection();
-    
-    // Sync database (create tables if they don't exist)
-    await sequelize.sync({ force: false, alter: true });
-    console.log('✅ Database synchronized successfully.');
-    
-    // Close connection
-    await sequelize.close();
-    console.log('✅ Database connection closed.');
-    
+    await client.connect();
+    console.log('✅ Connected to PostgreSQL');
+
+    // Check if database exists
+    const dbExists = await client.query(
+      "SELECT 1 FROM pg_database WHERE datname = $1",
+      [process.env.DB_NAME || 'credits_db']
+    );
+
+    if (dbExists.rows.length === 0) {
+      // Create database
+      await client.query(`CREATE DATABASE ${process.env.DB_NAME || 'credits_db'}`);
+      console.log(`✅ Database '${process.env.DB_NAME || 'credits_db'}' created successfully`);
+    } else {
+      console.log(`✅ Database '${process.env.DB_NAME || 'credits_db'}' already exists`);
+    }
+
   } catch (error) {
     console.error('❌ Error initializing database:', error);
-    process.exit(1);
+  } finally {
+    await client.end();
   }
-};
+}
 
-// Run if this file is executed directly
+// Run if called directly
 if (require.main === module) {
   initDatabase();
 }
 
-module.exports = initDatabase; 
+module.exports = { initDatabase }; 

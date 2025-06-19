@@ -1,0 +1,14 @@
+{
+  "/_not-found": "app/_not-found.js",
+  "/api/auth/login/route": "app/api/auth/login/route.js",
+  "/api/auth/register/route": "app/api/auth/register/route.js",
+  "/api/credits/[id]/route": "app/api/credits/[id]/route.js",
+  "/api/credits/route": "app/api/credits/route.js",
+  "/api/health/detailed/route": "app/api/health/detailed/route.js",
+  "/api/health/route": "app/api/health/route.js",
+  "/credits/[id]/page": "app/credits/[id]/page.js",
+  "/health/page": "app/health/page.js",
+  "/credits/new/page": "app/credits/new/page.js",
+  "/page": "app/page.js",
+  "/credits/page": "app/credits/page.js"
+}

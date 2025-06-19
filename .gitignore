@@ -7,8 +7,8 @@ node_modules/
 /coverage
 
 # Next.js
-/.next/
-/out/
+# /.next/
+# /out/
 
 # Production
 /build
@@ -90,7 +90,7 @@ jspm_packages/
 .parcel-cache
 
 # Next.js build output
-.next
+# .next
 
 # Nuxt.js build / generate output
 .nuxt

@@ -1,71 +1,75 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../lib/database');
+const { getSequelize } = require('../lib/database');
 
-const Payment = sequelize.define('Payment', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  creditId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'credits',
-      key: 'id',
+const Payment = (() => {
+  const sequelize = getSequelize();
+  
+  return sequelize.define('Payment', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-  },
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'users',
-      key: 'id',
+    creditId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'credits',
+        key: 'id',
+      },
     },
-  },
-  amount: {
-    type: DataTypes.DECIMAL(15, 2),
-    allowNull: false,
-    validate: {
-      min: 0,
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
     },
-  },
-  paymentDate: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW,
-  },
-  paymentMethod: {
-    type: DataTypes.ENUM('cash', 'bank_transfer', 'credit_card', 'debit_card'),
-    allowNull: false,
-  },
-  status: {
-    type: DataTypes.ENUM('pending', 'completed', 'failed', 'cancelled'),
-    defaultValue: 'pending',
-  },
-  transactionId: {
-    type: DataTypes.STRING(100),
-    allowNull: true,
-  },
-  notes: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  dueDate: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
-  isLate: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
-  lateFee: {
-    type: DataTypes.DECIMAL(15, 2),
-    defaultValue: 0,
-  },
-}, {
-  tableName: 'payments',
-  timestamps: true,
-});
+    amount: {
+      type: DataTypes.DECIMAL(15, 2),
+      allowNull: false,
+      validate: {
+        min: 0,
+      },
+    },
+    paymentDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    paymentMethod: {
+      type: DataTypes.ENUM('cash', 'bank_transfer', 'credit_card', 'debit_card'),
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM('pending', 'completed', 'failed', 'cancelled'),
+      defaultValue: 'pending',
+    },
+    transactionId: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
+    notes: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    dueDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    isLate: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    lateFee: {
+      type: DataTypes.DECIMAL(15, 2),
+      defaultValue: 0,
+    },
+  }, {
+    tableName: 'payments',
+    timestamps: true,
+  });
+})();
 
 module.exports = Payment; 

@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
-import { Credit, User, Payment } from '../../../../models';
+import { getModels, setupAssociations } from '../../../../models';
 
 // GET /api/credits/[id] - Lấy thông tin credit cụ thể
 export async function GET(request, { params }) {
   try {
+    // Setup models and associations
+    setupAssociations();
+    const { Credit, User, Payment } = getModels();
+    
     const { id } = params;
 
     const credit = await Credit.findByPk(id, {
@@ -47,6 +51,10 @@ export async function GET(request, { params }) {
 // PUT /api/credits/[id] - Cập nhật credit
 export async function PUT(request, { params }) {
   try {
+    // Setup models and associations
+    setupAssociations();
+    const { Credit } = getModels();
+    
     const { id } = params;
     const body = await request.json();
     const { status, notes } = body;
@@ -96,6 +104,10 @@ export async function PUT(request, { params }) {
 // DELETE /api/credits/[id] - Xóa credit
 export async function DELETE(request, { params }) {
   try {
+    // Setup models and associations
+    setupAssociations();
+    const { Credit } = getModels();
+    
     const { id } = params;
 
     const credit = await Credit.findByPk(id);

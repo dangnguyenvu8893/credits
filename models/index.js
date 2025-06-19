@@ -1,30 +1,26 @@
-const { Sequelize } = require('sequelize');
-const config = require('../config/database');
+const { getSequelize } = require('../lib/database');
 
-const env = process.env.NODE_ENV || 'development';
-const dbConfig = config[env];
+// Lazy load models to avoid Sequelize initialization during build
+let User, Credit, Payment;
 
-const sequelize = new Sequelize(
-  dbConfig.database,
-  dbConfig.username,
-  dbConfig.password,
-  {
-    host: dbConfig.host,
-    port: dbConfig.port,
-    dialect: dbConfig.dialect,
-    pool: dbConfig.pool,
-    logging: dbConfig.logging,
-    define: {
-      timestamps: true,
-      underscored: true,
-      freezeTableName: true
-    }
+const getModels = () => {
+  if (!User) {
+    User = require('./User');
   }
-);
+  if (!Credit) {
+    Credit = require('./Credit');
+  }
+  if (!Payment) {
+    Payment = require('./Payment');
+  }
+  
+  return { User, Credit, Payment };
+};
 
 // Test the connection
 const testConnection = async () => {
   try {
+    const sequelize = getSequelize();
     await sequelize.authenticate();
     console.log('✅ Database connection has been established successfully.');
   } catch (error) {
@@ -32,16 +28,27 @@ const testConnection = async () => {
   }
 };
 
-// Import models here
-// const User = require('./user')(sequelize, Sequelize.DataTypes);
-// const Credit = require('./credit')(sequelize, Sequelize.DataTypes);
+// Setup associations when models are loaded
+const setupAssociations = () => {
+  const models = getModels();
+  
+  // Define associations here
+  models.User.hasMany(models.Credit, { foreignKey: 'userId', as: 'credits' });
+  models.Credit.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
 
-// Define associations here
-// User.hasMany(Credit);
-// Credit.belongsTo(User);
+  models.User.hasMany(models.Credit, { foreignKey: 'approvedBy', as: 'approvedCredits' });
+  models.Credit.belongsTo(models.User, { foreignKey: 'approvedBy', as: 'approver' });
+
+  models.Credit.hasMany(models.Payment, { foreignKey: 'creditId', as: 'payments' });
+  models.Payment.belongsTo(models.Credit, { foreignKey: 'creditId', as: 'credit' });
+
+  models.User.hasMany(models.Payment, { foreignKey: 'userId', as: 'payments' });
+  models.Payment.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
+};
 
 module.exports = {
-  sequelize,
-  Sequelize,
-  testConnection
+  getSequelize,
+  testConnection,
+  getModels,
+  setupAssociations
 }; 

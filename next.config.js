@@ -1,16 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
   env: {
-    CUSTOM_KEY: process.env.CUSTOM_KEY,
+    CUSTOM_KEY: process.env.CUSTOM_KEY || 'default_key',
   },
   webpack: (config, { isServer }) => {
     if (isServer) {
-      // Handle mysql2 package for server-side
+      // Handle pg (PostgreSQL) package for server-side
       config.externals = config.externals || [];
-      config.externals.push('mysql2');
+      config.externals.push('pg');
+      config.externals.push('pg-hstore');
       
       // Add fallback for node modules
       config.resolve.fallback = {
@@ -18,6 +16,38 @@ const nextConfig = {
         fs: false,
         net: false,
         tls: false,
+        crypto: false,
+        stream: false,
+        util: false,
+        buffer: false,
+        process: false,
+        path: false,
+        os: false,
+        url: false,
+        querystring: false,
+        zlib: false,
+        http: false,
+        https: false,
+        assert: false,
+        constants: false,
+        events: false,
+        punycode: false,
+        string_decoder: false,
+        sys: false,
+        timers: false,
+        tty: false,
+        vm: false,
+        domain: false,
+        dns: false,
+        dgram: false,
+        child_process: false,
+        cluster: false,
+        module: false,
+        global: false,
+        console: false,
+        Buffer: false,
+        __filename: false,
+        __dirname: false,
       };
     }
     return config;

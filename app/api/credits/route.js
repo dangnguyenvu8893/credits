@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
-import { Credit, User } from '../../../models';
+import { getModels, setupAssociations } from '../../../models';
 
 // GET /api/credits - Lấy danh sách credits
 export async function GET(request) {
   try {
+    // Setup models and associations
+    setupAssociations();
+    const { Credit, User } = getModels();
+    
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page')) || 1;
     const limit = parseInt(searchParams.get('limit')) || 10;
@@ -57,6 +61,10 @@ export async function GET(request) {
 // POST /api/credits - Tạo credit mới
 export async function POST(request) {
   try {
+    // Setup models and associations
+    setupAssociations();
+    const { Credit } = getModels();
+    
     const body = await request.json();
     const { amount, interestRate, term, purpose, userId } = body;
 

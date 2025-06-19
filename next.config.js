@@ -6,6 +6,22 @@ const nextConfig = {
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Handle mysql2 package for server-side
+      config.externals = config.externals || [];
+      config.externals.push('mysql2');
+      
+      // Add fallback for node modules
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+    return config;
+  },
   async headers() {
     return [
       {

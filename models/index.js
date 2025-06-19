@@ -1,23 +1,47 @@
-const User = require('./User');
-const Credit = require('./Credit');
-const Payment = require('./Payment');
+const { Sequelize } = require('sequelize');
+const config = require('../config/database');
 
-// Associations
-User.hasMany(Credit, { foreignKey: 'userId', as: 'credits' });
-Credit.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+const env = process.env.NODE_ENV || 'development';
+const dbConfig = config[env];
 
-User.hasMany(Payment, { foreignKey: 'userId', as: 'payments' });
-Payment.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+const sequelize = new Sequelize(
+  dbConfig.database,
+  dbConfig.username,
+  dbConfig.password,
+  {
+    host: dbConfig.host,
+    port: dbConfig.port,
+    dialect: dbConfig.dialect,
+    pool: dbConfig.pool,
+    logging: dbConfig.logging,
+    define: {
+      timestamps: true,
+      underscored: true,
+      freezeTableName: true
+    }
+  }
+);
 
-Credit.hasMany(Payment, { foreignKey: 'creditId', as: 'payments' });
-Payment.belongsTo(Credit, { foreignKey: 'creditId', as: 'credit' });
+// Test the connection
+const testConnection = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('✅ Database connection has been established successfully.');
+  } catch (error) {
+    console.error('❌ Unable to connect to the database:', error);
+  }
+};
 
-// Admin approval relationship
-User.hasMany(Credit, { foreignKey: 'approvedBy', as: 'approvedCredits' });
-Credit.belongsTo(User, { foreignKey: 'approvedBy', as: 'approver' });
+// Import models here
+// const User = require('./user')(sequelize, Sequelize.DataTypes);
+// const Credit = require('./credit')(sequelize, Sequelize.DataTypes);
+
+// Define associations here
+// User.hasMany(Credit);
+// Credit.belongsTo(User);
 
 module.exports = {
-  User,
-  Credit,
-  Payment,
+  sequelize,
+  Sequelize,
+  testConnection
 }; 

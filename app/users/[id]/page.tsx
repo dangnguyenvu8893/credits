@@ -4,13 +4,14 @@ import Link from 'next/link';
 import UserDetailForm from './user-detail-form';
 
 interface UserDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function UserDetailPage({ params }: UserDetailPageProps) {
-  const users = await getUserById(params.id);
+  const { id } = await params;
+  const users = await getUserById(id);
   
   if (!users || users.length === 0) {
     notFound();

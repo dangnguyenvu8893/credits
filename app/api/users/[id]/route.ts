@@ -5,10 +5,11 @@ import { NewUser } from '@/lib/db/schema';
 // GET /api/users/[id] - Get user by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = await getUserById(params.id);
+    const { id } = await params;
+    const user = await getUserById(id);
     
     if (!user || user.length === 0) {
       return NextResponse.json(
@@ -30,13 +31,14 @@ export async function GET(
 // PUT /api/users/[id] - Update user
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     
     // Check if user exists
-    const existingUser = await getUserById(params.id);
+    const existingUser = await getUserById(id);
     if (!existingUser || existingUser.length === 0) {
       return NextResponse.json(
         { error: 'User not found' },
@@ -88,7 +90,7 @@ export async function PUT(
     if (body.salary !== undefined) updateData.salary = body.salary;
     if (body.cicRank) updateData.cicRank = body.cicRank;
 
-    const updatedUser = await updateUser(params.id, updateData);
+    const updatedUser = await updateUser(id, updateData);
     
     return NextResponse.json(
       { message: 'User updated successfully', user: updatedUser[0] },
@@ -123,11 +125,12 @@ export async function PUT(
 // DELETE /api/users/[id] - Delete user
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     // Check if user exists
-    const existingUser = await getUserById(params.id);
+    const existingUser = await getUserById(id);
     if (!existingUser || existingUser.length === 0) {
       return NextResponse.json(
         { error: 'User not found' },
@@ -135,7 +138,7 @@ export async function DELETE(
       );
     }
 
-    await deleteUser(params.id);
+    await deleteUser(id);
     
     return NextResponse.json(
       { message: 'User deleted successfully' },
@@ -148,4 +151,4 @@ export async function DELETE(
       { status: 500 }
     );
   }
-} 
+}

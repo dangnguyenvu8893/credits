@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS "users" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"email" varchar(255) NOT NULL,
+	"fullname" varchar(255) NOT NULL,
+	"birthdate" date NOT NULL,
+	"id_number" varchar(20) NOT NULL,
+	"address" text NOT NULL,
+	"marital_status" varchar(50) NOT NULL,
+	"phone_number" varchar(20) NOT NULL,
+	"occupation" varchar(255) NOT NULL,
+	"salary" integer NOT NULL,
+	"cic_rank" varchar(50) NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "users_email_unique" UNIQUE("email"),
+	CONSTRAINT "users_id_number_unique" UNIQUE("id_number")
+);

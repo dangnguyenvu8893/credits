@@ -2,8 +2,8 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import { client, db } from './drizzle';
-import { todos } from './schema';
 import { seed } from 'drizzle-seed';
+import { users } from './schema';
 
 dotenv.config();
 
@@ -37,14 +37,23 @@ async function runMigrations() {
 async function seedDatabase() {
   console.log('🌱 Seeding database...');
   
-  await seed(db, { todos }).refine((f) => ({
-    todos: {
-      columns: {
-        text: f.loremIpsum(),
-      },
-      count: 5,
-    },
-  }));
+  // await seed(db, { users }).refine((f) => ({
+  //   users: {
+  //     columns: {
+  //       fullname: f.firstName(),
+  //       email: f.email(),
+  //       birthdate: f.date(),
+  //       idNumber: f.number(),
+  //       address: f.string(),
+  //       maritalStatus: f.string(),
+  //       phoneNumber: f.string(),
+  //       occupation: f.string(),
+  //       salary: f.number(),
+  //       cicRank: f.string(),
+  //     },
+  //     count: 10,
+  //   },
+  // }));
   
   console.log('✅ Database seeded successfully');
 }

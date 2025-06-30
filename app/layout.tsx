@@ -5,8 +5,8 @@ import './globals.css';
 const geistMono = Geist_Mono({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Todo List',
-  description: 'A simple todo list application',
+  title: 'Quản lý người dùng',
+  description: 'Hệ thống quản lý thông tin người dùng',
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${geistMono.className} bg-gray-900 text-gray-200`}>
+      <body className={`text-gray-200`}>
         {children}
       </body>
     </html>

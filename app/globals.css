@@ -3,3 +3,14 @@
 @theme {
   --font-family-sans: 'Geist', sans-serif;
 }
+
+:root {
+  --primary-green: #7ed957;
+  --light-green-bg: #e6f4e6;
+  --form-bg: #fff;
+  --button-green: #7ed957;
+  --button-green-hover: #6cc24a;
+  --input-bg: #fff;
+  --input-border: #c3e6cb;
+  --input-radius: 12px;
+}

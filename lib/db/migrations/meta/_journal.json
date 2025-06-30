@@ -3,13 +3,6 @@
   "dialect": "postgresql",
   "entries": [
     {
-      "idx": 0,
-      "version": "7",
-      "when": 1733332502118,
-      "tag": "0000_bitter_talisman",
-      "breakpoints": true
-    },
-    {
       "idx": 1,
       "version": "7",
       "when": 1751124481300,

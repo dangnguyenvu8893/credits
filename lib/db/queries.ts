@@ -1,19 +1,6 @@
 import { db } from './drizzle';
-import { todos, users, type User, type NewUser } from './schema';
+import { users, type User, type NewUser } from './schema';
 import { InferSelectModel, eq } from 'drizzle-orm';
-
-export type Todo = InferSelectModel<typeof todos>;
-
-export async function getTodos() {
-  return db
-    .select({
-      id: todos.id,
-      text: todos.text,
-      createdAt: todos.createdAt,
-      updatedAt: todos.updatedAt,
-    })
-    .from(todos);
-}
 
 // User queries
 export async function getUsers() {

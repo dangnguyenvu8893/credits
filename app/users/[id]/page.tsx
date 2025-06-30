@@ -1,7 +1,7 @@
 import { getUserById } from '@/lib/db/queries';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import UserDetailForm from './user-detail-form';
+import UserForm from '../create/create-user-form';
 
 interface UserDetailPageProps {
   params: Promise<{
@@ -20,16 +20,16 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
   const user = users[0];
 
   return (
-    <div className="min-h-screen p-8 bg-gray-900">
-      <main className="max-w-2xl mx-auto">
+    <div className="min-h-screen p-8">
+      <main className="mx-auto">
         <div className="mb-8">
           <Link 
-            href="/users" 
+            href="/" 
             className="text-gray-400 hover:text-gray-300 transition-colors flex items-center"
           >
             ← Quay lại danh sách
           </Link>
-          <h1 className="text-3xl font-bold text-gray-100 mt-4">
+          <h1 className="text-3xl font-bold text-green-600 mt-4">
             Chi tiết người dùng
           </h1>
           <p className="text-gray-400 mt-2">
@@ -37,8 +37,8 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
           </p>
         </div>
 
-        <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <UserDetailForm user={user} />
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <UserForm user={user} mode="update" />
         </div>
       </main>
     </div>

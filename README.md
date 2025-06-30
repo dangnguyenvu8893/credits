@@ -1,4 +1,4 @@
-# Next.js and Postgres Starter Template
+# Hệ thống quản lý người dùng
 
 ## Tech Stack
 
@@ -6,11 +6,19 @@
 - **Database**: [Postgres](https://www.postgresql.org/)
 - **ORM**: [Drizzle](https://orm.drizzle.team/)
 
+## Tính năng
+
+- Quản lý danh sách người dùng
+- Thêm người dùng mới với thông tin đầy đủ
+- Xem và chỉnh sửa thông tin người dùng
+- Xóa người dùng
+- Tìm kiếm người dùng
+
 ## Getting Started
 
 ```bash
-git clone https://github.com/vercel/postgres-next-starter
-cd postgres-next-starter
+git clone <repository-url>
+cd credits2
 pnpm install
 ```
 

@@ -12,7 +12,7 @@ if (!process.env.POSTGRES_URL) {
 const postgresUrl = process.env.POSTGRES_URL;
 
 export const client = postgres(postgresUrl, {
-  ssl: process.env.NODE_ENV === 'production' ? 'require' : false,
+  ssl: 'require',
   max: 1,
 });
 

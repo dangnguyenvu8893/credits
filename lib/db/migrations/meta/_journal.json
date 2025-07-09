@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1751300402078,
-      "tag": "0000_lying_shard",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1752052035992,
-      "tag": "0001_regular_pride",
+      "when": 1752059045205,
+      "tag": "0000_slim_praxagora",
       "breakpoints": true
     }
   ]

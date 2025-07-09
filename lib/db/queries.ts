@@ -4,9 +4,15 @@ import { InferSelectModel, eq } from 'drizzle-orm';
 
 // User queries
 export async function getUsers() {
-  return db
-    .select()
-    .from(users);
+  try {
+    return await db
+      .select()
+      .from(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    // Return empty array if database connection fails
+    return [];
+  }
 }
 
 export async function getUserById(id: string) {

@@ -11,9 +11,18 @@ if (!process.env.POSTGRES_URL) {
 
 const postgresUrl = process.env.POSTGRES_URL;
 
+// Configure SSL based on environment
+const sslConfig = process.env.NODE_ENV === 'production' 
+  ? {
+      rejectUnauthorized: false, // Allow self-signed certificates in production
+    }
+  : true;
+
 export const client = postgres(postgresUrl, {
-  ssl: true,
+  ssl: sslConfig,
   max: 1,
+  idle_timeout: 20,
+  connect_timeout: 10,
 });
 
 export const db = drizzle(client, { schema });

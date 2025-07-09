@@ -1,6 +1,10 @@
 import { getUsers } from '@/lib/db/queries';
 import Link from 'next/link';
 
+// Force dynamic rendering to prevent build issues
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function UsersPage() {
   const users = await getUsers();
 

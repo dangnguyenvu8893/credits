@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getUserById, updateUser, deleteUser } from '@/lib/db/queries';
 import { NewUser } from '@/lib/db/schema';
+import { AIService } from '@/lib/services/ai-service';
 
 // GET /api/users/[id] - Get user by ID
 export async function GET(
@@ -76,6 +77,30 @@ export async function PUT(
       );
     }
 
+    // Get AI prediction if requested
+    let aiPrediction = null;
+    if (body.getPrediction) {
+      try {
+        const userData = {
+          email: body.email || existingUser[0].email,
+          fullname: body.fullname || existingUser[0].fullname,
+          birthdate: body.birthdate || existingUser[0].birthdate.toString(),
+          idNumber: body.idNumber || existingUser[0].idNumber,
+          address: body.address || existingUser[0].address,
+          maritalStatus: body.maritalStatus || existingUser[0].maritalStatus,
+          phoneNumber: body.phoneNumber || existingUser[0].phoneNumber,
+          occupation: body.occupation || existingUser[0].occupation,
+          salary: body.salary !== undefined ? body.salary : existingUser[0].salary,
+          cicRank: body.cicRank || existingUser[0].cicRank,
+        };
+        
+        aiPrediction = await AIService.predictMock(userData);
+      } catch (error) {
+        console.error('Error getting AI prediction:', error);
+        // Continue without prediction if AI fails
+      }
+    }
+
     const updateData: Partial<NewUser> = {};
     
     // Only include fields that are provided
@@ -89,6 +114,15 @@ export async function PUT(
     if (body.occupation) updateData.occupation = body.occupation;
     if (body.salary !== undefined) updateData.salary = body.salary;
     if (body.cicRank) updateData.cicRank = body.cicRank;
+
+    // Add AI prediction results if available
+    if (aiPrediction) {
+      updateData.cardType = aiPrediction.cardType;
+      updateData.creditLimit = aiPrediction.creditLimit;
+      updateData.confidence = Math.round(aiPrediction.confidence * 100);
+      updateData.predictionReasons = JSON.stringify(aiPrediction.reasons);
+      updateData.predictedAt = new Date();
+    }
 
     const updatedUser = await updateUser(id, updateData);
     

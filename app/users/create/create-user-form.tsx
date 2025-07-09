@@ -4,6 +4,7 @@ import '../../globals.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { User } from '@/lib/db/schema';
+import { AIService, PredictionResponse } from '@/lib/services/ai-service';
 
 interface FormData {
   email: string;
@@ -55,6 +56,8 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [prediction, setPrediction] = useState<PredictionResponse | null>(null);
+  const [isPredicting, setIsPredicting] = useState(false);
 
   // Initialize form data when user prop changes (for update mode)
   useEffect(() => {
@@ -71,6 +74,16 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
         salary: user.salary.toString(),
         cicRank: user.cicRank,
       });
+
+      // Load existing AI prediction if available
+      if (user.cardType && user.creditLimit) {
+        setPrediction({
+          cardType: user.cardType,
+          creditLimit: user.creditLimit,
+          confidence: (user.confidence || 0) / 100,
+          reasons: user.predictionReasons ? JSON.parse(user.predictionReasons) : [],
+        });
+      }
     }
   }, [user, mode]);
 
@@ -145,6 +158,36 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handlePredict = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsPredicting(true);
+    try {
+      // Try real AI API first, fallback to mock if fails
+      let result: PredictionResponse;
+      try {
+        result = await AIService.predict({
+          ...formData,
+          salary: parseInt(formData.salary),
+        });
+      } catch (error) {
+        console.log('AI API failed, using mock data:', error);
+        result = await AIService.predictMock({
+          ...formData,
+          salary: parseInt(formData.salary),
+        });
+      }
+      
+      setPrediction(result);
+    } catch (error) {
+      alert('Có lỗi xảy ra khi dự đoán. Vui lòng thử lại.');
+    } finally {
+      setIsPredicting(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -165,6 +208,8 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
         body: JSON.stringify({
           ...formData,
           salary: parseInt(formData.salary),
+          // Include AI prediction if available
+          getPrediction: !!prediction,
         }),
       });
 
@@ -434,14 +479,22 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
             {errors.cicRank && <p className="mt-1 text-sm text-red-500">{errors.cicRank}</p>}
           </div>
 
-          {/* Submit Button */}
-          <div className="flex justify-center pt-4">
+          {/* Action Buttons */}
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={handlePredict}
+              disabled={isPredicting || isSubmitting}
+              className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-full font-medium transition-colors text-lg shadow-md"
+            >
+              {isPredicting ? 'Đang phân tích...' : 'Phân tích tín dụng'}
+            </button>
             <button
               type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-full font-medium transition-colors text-lg shadow-md"
+              disabled={isSubmitting || isPredicting}
+              className="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-full font-medium transition-colors text-lg shadow-md"
             >
-              {isSubmitting ? 'Đang xử lý...' : mode === 'update' ? 'Cập nhật người dùng' : 'Check Account'}
+              {isSubmitting ? 'Đang xử lý...' : mode === 'update' ? 'Cập nhật người dùng' : 'Lưu thông tin'}
             </button>
           </div>
         </form>
@@ -449,26 +502,82 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
       
       {/* Kết quả bên phải */}
       <div className="w-full md:w-1/2 bg-white rounded-xl p-8 shadow-md border border-gray-200 flex flex-col" style={{ minWidth: '350px' }}>
-        <h2 className="text-xl font-bold mb-4 text-green-600">Eligibility Results</h2>
-        <div className="h-32 bg-gray-100 rounded mb-4 flex items-center justify-center text-gray-400">
-          [Chart Placeholder]
-        </div>
-        <div className="text-gray-700 text-sm overflow-y-auto">
-          <p>We are pleased to inform you that you are now eligible to apply for a credit card with the following benefits:</p>
-          <ul className="list-disc ml-5 my-2">
-            <li><b>Card Type:</b> Platinum</li>
-            <li><b>Credit Limit:</b> 200,000,000 VND</li>
-          </ul>
-          <b>Why You Qualified:</b>
-          <ul className="list-disc ml-5 my-2">
-            <li>Strong Credit Score (CIC Rating: 1 – Excellent)</li>
-            <li>Stable Monthly Income</li>
-            <li>Low Debt-to-Income Ratio</li>
-            <li>Consistent Employment</li>
-            <li>No Red Flags in Current Debt</li>
-          </ul>
-          <p>With these factors combined, you meet all criteria required for Platinum tier membership, which offers premium benefits and higher credit flexibility.</p>
-        </div>
+        <h2 className="text-xl font-bold mb-4 text-green-600">Kết quả phân tích tín dụng</h2>
+        
+        {isPredicting ? (
+          <div className="flex flex-col items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mb-4"></div>
+            <p className="text-gray-600">Đang phân tích thông tin...</p>
+          </div>
+        ) : prediction ? (
+          <div className="space-y-4">
+            {/* Card Type Badge */}
+            <div className="text-center">
+              <div className={`inline-block px-4 py-2 rounded-full text-white font-bold text-lg ${
+                prediction.cardType === 'Platinum' ? 'bg-gradient-to-r from-purple-500 to-pink-500' :
+                prediction.cardType === 'Gold' ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
+                prediction.cardType === 'Silver' ? 'bg-gradient-to-r from-gray-400 to-gray-600' :
+                'bg-gradient-to-r from-blue-500 to-green-500'
+              }`}>
+                {prediction.cardType}
+              </div>
+            </div>
+
+            {/* Credit Limit */}
+            <div className="bg-gray-50 rounded-lg p-4 text-center">
+              <p className="text-sm text-gray-600 mb-1">Hạn mức tín dụng</p>
+              <p className="text-2xl font-bold text-green-600">
+                {prediction.creditLimit.toLocaleString('vi-VN')} VND
+              </p>
+            </div>
+
+            {/* Confidence Score */}
+            <div className="bg-gray-50 rounded-lg p-4">
+              <p className="text-sm text-gray-600 mb-2">Độ tin cậy</p>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-green-500 h-2 rounded-full transition-all duration-500"
+                  style={{ width: `${prediction.confidence * 100}%` }}
+                ></div>
+              </div>
+              <p className="text-sm text-gray-600 mt-1">
+                {Math.round(prediction.confidence * 100)}%
+              </p>
+            </div>
+
+            {/* Reasons */}
+            <div className="bg-gray-50 rounded-lg p-4">
+              <p className="text-sm font-semibold text-gray-700 mb-2">Lý do được chấp thuận:</p>
+              <ul className="space-y-1">
+                {prediction.reasons.map((reason, index) => (
+                  <li key={index} className="text-sm text-gray-600 flex items-start">
+                    <span className="text-green-500 mr-2">✓</span>
+                    {reason}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Action Button */}
+            <button
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              className="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-full font-medium transition-colors text-lg shadow-md"
+            >
+              {isSubmitting ? 'Đang xử lý...' : 'Đăng ký thẻ tín dụng'}
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-64 text-center">
+            <div className="text-gray-400 mb-4">
+              <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <p className="text-gray-600 mb-2">Chưa có kết quả phân tích</p>
+            <p className="text-sm text-gray-500">Vui lòng điền đầy đủ thông tin và nhấn "Phân tích tín dụng"</p>
+          </div>
+        )}
       </div>
     </div>
   );

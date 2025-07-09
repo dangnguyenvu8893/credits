@@ -13,26 +13,26 @@ export default async function Home() {
       <main className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800">
-            Danh sách người dùng
+            User Lists
           </h1>
           <Link 
             href="/users/create" 
             className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
           >
-            Thêm người dùng
+            Add User
           </Link>
         </div>
 
         {users.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-400 text-lg mb-4">
-              Chưa có người dùng nào
+              No users found
             </div>
             <Link 
               href="/users/create" 
               className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition-colors"
             >
-              Thêm người dùng đầu tiên
+              Add First User
             </Link>
           </div>
         ) : (
@@ -42,16 +42,16 @@ export default async function Home() {
                 <thead className="bg-gray-100">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      Thông tin cơ bản
+                      Basic Information
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      Liên hệ
+                      Contact
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      Công việc
+                      Work
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      Thao tác
+                      Actions
                     </th>
                   </tr>
                 </thead>
@@ -75,7 +75,7 @@ export default async function Home() {
                               ID: {user.idNumber}
                             </div>
                             <div className="text-sm text-gray-500">
-                              {new Date(user.birthdate).toLocaleDateString('vi-VN')}
+                              {new Date(user.birthdate).toLocaleDateString('en-US')}
                             </div>
                           </div>
                         </div>
@@ -88,7 +88,7 @@ export default async function Home() {
                       <td className="px-6 py-4">
                         <div className="text-sm text-gray-900">{user.occupation}</div>
                         <div className="text-sm text-gray-500">
-                          {user.salary.toLocaleString('vi-VN')} VND
+                          {user.salary.toLocaleString('en-US')} VND
                         </div>
                         <div className="text-sm text-gray-500">
                           CIC: {user.cicRank}

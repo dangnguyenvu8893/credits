@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getUsers, createUser } from '@/lib/db/queries';
 import { NewUser } from '@/lib/db/schema';
+import { AIService } from '@/lib/services/ai-service';
 
 // GET /api/users - List all users
 export async function GET() {
@@ -58,6 +59,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get AI prediction if requested
+    let aiPrediction = null;
+    if (body.getPrediction) {
+      try {
+        aiPrediction = await AIService.predictMock({
+          email: body.email,
+          fullname: body.fullname,
+          birthdate: body.birthdate,
+          idNumber: body.idNumber,
+          address: body.address,
+          maritalStatus: body.maritalStatus,
+          phoneNumber: body.phoneNumber,
+          occupation: body.occupation,
+          salary: body.salary,
+          cicRank: body.cicRank,
+        });
+      } catch (error) {
+        console.error('Error getting AI prediction:', error);
+        // Continue without prediction if AI fails
+      }
+    }
+
     const userData: NewUser = {
       email: body.email,
       fullname: body.fullname,
@@ -69,6 +92,14 @@ export async function POST(request: NextRequest) {
       occupation: body.occupation,
       salary: body.salary,
       cicRank: body.cicRank,
+      // Add AI prediction results if available
+      ...(aiPrediction && {
+        cardType: aiPrediction.cardType,
+        creditLimit: aiPrediction.creditLimit,
+        confidence: Math.round(aiPrediction.confidence * 100),
+        predictionReasons: JSON.stringify(aiPrediction.reasons),
+        predictedAt: new Date(),
+      }),
     };
 
     const newUser = await createUser(userData);

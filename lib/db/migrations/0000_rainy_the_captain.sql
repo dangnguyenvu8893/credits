@@ -16,7 +16,5 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"prediction_reasons" text,
 	"predicted_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "users_email_unique" UNIQUE("email"),
-	CONSTRAINT "users_id_number_unique" UNIQUE("id_number")
+	"updated_at" timestamp DEFAULT now() NOT NULL
 );

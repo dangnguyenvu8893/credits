@@ -3,10 +3,10 @@ import { InferSelectModel, InferInsertModel } from 'drizzle-orm';
 
 export const users = pgTable('users', {
   id: uuid('id').defaultRandom().primaryKey(),
-  email: varchar('email', { length: 255 }).notNull().unique(),
+  email: varchar('email', { length: 255 }).notNull(),
   fullname: varchar('fullname', { length: 255 }).notNull(),
   birthdate: date('birthdate').notNull(),
-  idNumber: varchar('id_number', { length: 20 }).notNull().unique(),
+  idNumber: varchar('id_number', { length: 20 }).notNull(),
   address: text('address').notNull(),
   maritalStatus: varchar('marital_status', { length: 50 }).notNull(),
   phoneNumber: varchar('phone_number', { length: 20 }).notNull(),

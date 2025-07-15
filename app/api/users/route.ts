@@ -111,22 +111,6 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('Error creating user:', error);
     
-    // Handle unique constraint violations
-    if (error.code === '23505') {
-      if (error.constraint === 'users_email_unique') {
-        return NextResponse.json(
-          { error: 'Email already exists' },
-          { status: 409 }
-        );
-      }
-      if (error.constraint === 'users_id_number_unique') {
-        return NextResponse.json(
-          { error: 'ID number already exists' },
-          { status: 409 }
-        );
-      }
-    }
-    
     return NextResponse.json(
       { error: 'Failed to create user' },
       { status: 500 }

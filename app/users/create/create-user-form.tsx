@@ -195,6 +195,12 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
       return;
     }
 
+    // Kiểm tra xem có kết quả phân tích AI chưa (chỉ áp dụng cho create mode)
+    if (mode === 'create' && !prediction) {
+      alert('Vui lòng thực hiện phân tích tín dụng trước khi lưu thông tin!');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const url = mode === 'update' ? `/api/users/${user?.id}` : '/api/users';
@@ -491,8 +497,12 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
             </button>
             <button
               type="submit"
-              disabled={isSubmitting || isPredicting}
-              className="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-full font-medium transition-colors text-lg shadow-md"
+              disabled={isSubmitting || isPredicting || (mode === 'create' && !prediction)}
+              className={`flex-1 py-3 px-4 rounded-full font-medium transition-colors text-lg shadow-md ${
+                isSubmitting || isPredicting || (mode === 'create' && !prediction)
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-green-500 hover:bg-green-600 text-white'
+              }`}
             >
               {isSubmitting ? 'Đang xử lý...' : mode === 'update' ? 'Cập nhật người dùng' : 'Lưu thông tin'}
             </button>
@@ -564,7 +574,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
               disabled={isSubmitting}
               className="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-full font-medium transition-colors text-lg shadow-md"
             >
-              {isSubmitting ? 'Đang xử lý...' : 'Đăng ký thẻ tín dụng'}
+              {isSubmitting ? 'Đang xử lý...' : mode === 'update' ? 'Cập nhật thông tin' : 'Đăng ký thẻ tín dụng'}
             </button>
           </div>
         ) : (

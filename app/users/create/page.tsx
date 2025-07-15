@@ -6,10 +6,10 @@ export default function CreateUserPage() {
       <main className="mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-green-600">
-            Tạo người dùng mới
+            Create New User
           </h1>
           <p className="text-gray-400 mt-2">
-            Nhập thông tin để tạo người dùng mới
+            Enter information to create a new user
           </p>
         </div>
 

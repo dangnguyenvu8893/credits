@@ -20,7 +20,7 @@ const getCardTypeColor = (cardType: string | null) => {
 
 const formatCurrency = (amount: number | null) => {
   if (!amount) return 'N/A';
-  return new Intl.NumberFormat('vi-VN').format(amount) + ' VND';
+  return new Intl.NumberFormat('en-US').format(amount) + ' VND';
 };
 
 interface UserDetailPageProps {
@@ -47,10 +47,10 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
             href="/users" 
             className="text-gray-400 hover:text-gray-300 transition-colors flex items-center"
           >
-            ← Quay lại danh sách
+            ← Back to list
           </Link>
           <h1 className="text-3xl font-bold text-green-600 mt-4">
-            Chi tiết người dùng
+            User Details
           </h1>
           <p className="text-gray-400 mt-2">
             {user.fullname} - {user.email}
@@ -60,30 +60,30 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
         {/* AI Results Summary */}
         {user.cardType && (
           <div className="mb-6 bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Kết quả phân tích AI</h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-4">AI Analysis Results</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
                 <div className={`inline-block px-6 py-3 rounded-full text-white font-bold text-lg ${getCardTypeColor(user.cardType)}`}>
                   {user.cardType}
                 </div>
-                <p className="text-sm text-gray-600 mt-2">Loại thẻ</p>
+                <p className="text-sm text-gray-600 mt-2">Card Type</p>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">
                   {formatCurrency(user.creditLimit)}
                 </div>
-                <p className="text-sm text-gray-600 mt-2">Hạn mức tín dụng</p>
+                <p className="text-sm text-gray-600 mt-2">Credit Limit</p>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-blue-600">
                   {user.confidence || 0}%
                 </div>
-                <p className="text-sm text-gray-600 mt-2">Độ tin cậy</p>
+                <p className="text-sm text-gray-600 mt-2">Confidence</p>
               </div>
             </div>
             {user.predictionReasons && (
               <div className="mt-4">
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">Lý do được chấp thuận:</h3>
+                <h3 className="text-sm font-semibold text-gray-700 mb-2">Approval reasons:</h3>
                 <ul className="space-y-1">
                   {JSON.parse(user.predictionReasons).map((reason: string, index: number) => (
                     <li key={index} className="text-sm text-gray-600 flex items-start">
@@ -96,7 +96,7 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
             )}
             {user.predictedAt && (
               <div className="mt-4 text-xs text-gray-500">
-                Phân tích lần cuối: {new Date(user.predictedAt).toLocaleString('vi-VN')}
+                Last analyzed: {new Date(user.predictedAt).toLocaleString('en-US')}
               </div>
             )}
           </div>

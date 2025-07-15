@@ -12,7 +12,7 @@ export default function UserActions({ userId, userName }: UserActionsProps) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
-    if (!confirm(`Bạn có chắc chắn muốn xóa người dùng "${userName}"?`)) {
+    if (!confirm(`Are you sure you want to delete user "${userName}"?`)) {
       return;
     }
 
@@ -27,10 +27,10 @@ export default function UserActions({ userId, userName }: UserActionsProps) {
         window.location.reload();
       } else {
         const error = await response.json();
-        alert(`Lỗi: ${error.error}`);
+        alert(`Error: ${error.error}`);
       }
     } catch (error) {
-      alert('Có lỗi xảy ra khi xóa người dùng');
+      alert('An error occurred while deleting the user');
     } finally {
       setIsDeleting(false);
     }
@@ -42,7 +42,7 @@ export default function UserActions({ userId, userName }: UserActionsProps) {
         href={`/users/${userId}`}
         className="text-blue-400 hover:text-blue-300 transition-colors"
       >
-        Xem
+        View
       </Link>
       <button
         className={`text-red-400 hover:text-red-300 transition-colors ${
@@ -51,7 +51,7 @@ export default function UserActions({ userId, userName }: UserActionsProps) {
         onClick={handleDelete}
         disabled={isDeleting}
       >
-        {isDeleting ? 'Đang xóa...' : 'Xóa'}
+        {isDeleting ? 'Deleting...' : 'Delete'}
       </button>
     </div>
   );

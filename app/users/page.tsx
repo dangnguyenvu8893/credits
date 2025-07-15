@@ -25,19 +25,19 @@ export default async function UsersPage() {
 
   const formatCurrency = (amount: number | null) => {
     if (!amount) return 'N/A';
-    return new Intl.NumberFormat('vi-VN').format(amount) + ' VND';
+    return new Intl.NumberFormat('en-US').format(amount) + ' VND';
   };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Danh sách người dùng</h1>
+          <h1 className="text-3xl font-bold text-gray-900">User List</h1>
           <Link
             href="/users/create"
             className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
           >
-            Thêm người dùng
+            Add User
           </Link>
         </div>
 
@@ -47,16 +47,16 @@ export default async function UsersPage() {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Thông tin cơ bản
+                    Basic Information
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Thông tin tài chính
+                    Financial Information
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Kết quả AI
+                    AI Results
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Thao tác
+                    Actions
                   </th>
                 </tr>
               </thead>
@@ -87,9 +87,9 @@ export default async function UsersPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm text-gray-900">
-                        <div className="font-medium">Lương: {formatCurrency(user.salary)}</div>
+                        <div className="font-medium">Salary: {formatCurrency(user.salary)}</div>
                         <div>CIC Rank: <span className="font-medium">{user.cicRank}</span></div>
-                        <div>Nghề nghiệp: {user.occupation}</div>
+                        <div>Occupation: {user.occupation}</div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -99,22 +99,22 @@ export default async function UsersPage() {
                             {user.cardType}
                           </div>
                           <div className="text-sm text-gray-900">
-                            Hạn mức: {formatCurrency(user.creditLimit)}
+                            Credit Limit: {formatCurrency(user.creditLimit)}
                           </div>
                           {user.confidence && (
                             <div className="text-sm text-gray-600">
-                              Độ tin cậy: {user.confidence}%
+                              Confidence: {user.confidence}%
                             </div>
                           )}
                           {user.predictedAt && (
                             <div className="text-xs text-gray-500">
-                              Phân tích: {new Date(user.predictedAt).toLocaleDateString('vi-VN')}
+                              Analyzed: {new Date(user.predictedAt).toLocaleDateString('en-US')}
                             </div>
                           )}
                         </div>
                       ) : (
                         <div className="text-sm text-gray-500">
-                          Chưa phân tích
+                          Not analyzed
                         </div>
                       )}
                     </td>
@@ -123,13 +123,13 @@ export default async function UsersPage() {
                         href={`/users/${user.id}`}
                         className="text-green-600 hover:text-green-900 mr-4"
                       >
-                        Xem chi tiết
+                        View Details
                       </Link>
                       <Link
                         href={`/users/${user.id}?edit=true`}
                         className="text-blue-600 hover:text-blue-900"
                       >
-                        Chỉnh sửa
+                        Edit
                       </Link>
                     </td>
                   </tr>
@@ -146,13 +146,13 @@ export default async function UsersPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Chưa có người dùng nào</h3>
-            <p className="text-gray-500 mb-6">Bắt đầu bằng cách thêm người dùng đầu tiên.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No users found</h3>
+            <p className="text-gray-500 mb-6">Start by adding your first user.</p>
             <Link
               href="/users/create"
               className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
             >
-              Thêm người dùng
+              Add User
             </Link>
           </div>
         )}

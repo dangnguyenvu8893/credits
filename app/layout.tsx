@@ -5,8 +5,8 @@ import './globals.css';
 const geistMono = Geist_Mono({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Quản lý người dùng',
-  description: 'Hệ thống quản lý thông tin người dùng',
+  title: 'User Management System',
+  description: 'System for managing user information',
 };
 
 export default function RootLayout({

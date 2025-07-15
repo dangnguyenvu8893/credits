@@ -60,7 +60,7 @@ export class AIService {
       return result;
     } catch (error) {
       console.error('Error calling AI API:', error);
-      throw new Error('Không thể kết nối đến AI service. Vui lòng thử lại sau.');
+      throw new Error('Unable to connect to AI service. Please try again later.');
     }
   }
 
@@ -84,37 +84,37 @@ export class AIService {
       creditLimit = 200000000; // 200M VND
       confidence = 0.95;
       reasons = [
-        'Thu nhập cao (trên 50M VND/tháng)',
-        'CIC Rating xuất sắc (A)',
-        'Tỷ lệ nợ/thu nhập thấp',
-        'Lịch sử tín dụng tốt'
+        'High income (above 50M VND/month)',
+        'Excellent CIC Rating (A)',
+        'Low debt-to-income ratio',
+        'Good credit history'
       ];
     } else if (salary >= 30000000 && (cicRank === 'A' || cicRank === 'B')) {
       cardType = 'Gold';
       creditLimit = 100000000; // 100M VND
       confidence = 0.85;
       reasons = [
-        'Thu nhập ổn định (trên 30M VND/tháng)',
-        'CIC Rating tốt (A hoặc B)',
-        'Tình trạng việc làm ổn định'
+        'Stable income (above 30M VND/month)',
+        'Good CIC Rating (A or B)',
+        'Stable employment status'
       ];
     } else if (salary >= 15000000 && (cicRank === 'A' || cicRank === 'B' || cicRank === 'C')) {
       cardType = 'Silver';
       creditLimit = 75000000; // 75M VND
       confidence = 0.75;
       reasons = [
-        'Thu nhập đủ điều kiện (trên 15M VND/tháng)',
-        'CIC Rating chấp nhận được',
-        'Không có dấu hiệu rủi ro'
+        'Qualified income (above 15M VND/month)',
+        'Acceptable CIC Rating',
+        'No risk indicators'
       ];
     } else {
       cardType = 'Standard';
       creditLimit = 50000000; // 50M VND
       confidence = 0.6;
       reasons = [
-        'Thu nhập cơ bản',
-        'Cần cải thiện CIC Rating',
-        'Hạn mức tín dụng cơ bản'
+        'Basic income',
+        'CIC Rating needs improvement',
+        'Basic credit limit'
       ];
     }
 

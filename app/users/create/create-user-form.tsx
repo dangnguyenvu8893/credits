@@ -33,17 +33,17 @@ const initialFormData: FormData = {
 };
 
 const maritalStatusOptions = [
-  { value: 'Single', label: 'Độc thân' },
-  { value: 'Married', label: 'Đã kết hôn' },
-  { value: 'Divorced', label: 'Đã ly hôn' },
-  { value: 'Widowed', label: 'Góa' },
+  { value: 'Single', label: 'Single' },
+  { value: 'Married', label: 'Married' },
+  { value: 'Divorced', label: 'Divorced' },
+  { value: 'Widowed', label: 'Widowed' },
 ];
 
 const cicRankOptions = [
-  { value: 'A', label: 'A - Tốt' },
-  { value: 'B', label: 'B - Khá' },
-  { value: 'C', label: 'C - Trung bình' },
-  { value: 'D', label: 'D - Kém' },
+  { value: 'A', label: 'A - Excellent' },
+  { value: 'B', label: 'B - Good' },
+  { value: 'C', label: 'C - Average' },
+  { value: 'D', label: 'D - Poor' },
 ];
 
 interface UserFormProps {
@@ -92,66 +92,66 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
 
     // Email validation
     if (!formData.email) {
-      newErrors.email = 'Email là bắt buộc';
+      newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email không hợp lệ';
+      newErrors.email = 'Invalid email format';
     }
 
     // Fullname validation
     if (!formData.fullname.trim()) {
-      newErrors.fullname = 'Họ và tên là bắt buộc';
+      newErrors.fullname = 'Full name is required';
     }
 
     // Birthdate validation
     if (!formData.birthdate) {
-      newErrors.birthdate = 'Ngày sinh là bắt buộc';
+      newErrors.birthdate = 'Birth date is required';
     } else {
       const birthDate = new Date(formData.birthdate);
       const today = new Date();
       if (birthDate > today) {
-        newErrors.birthdate = 'Ngày sinh không thể trong tương lai';
+        newErrors.birthdate = 'Birth date cannot be in the future';
       }
     }
 
     // ID Number validation
     if (!formData.idNumber.trim()) {
-      newErrors.idNumber = 'Số CMND/CCCD là bắt buộc';
+      newErrors.idNumber = 'ID number is required';
     } else if (formData.idNumber.length < 9 || formData.idNumber.length > 12) {
-      newErrors.idNumber = 'Số CMND/CCCD phải từ 9-12 ký tự';
+      newErrors.idNumber = 'ID number must be 9-12 characters';
     }
 
     // Address validation
     if (!formData.address.trim()) {
-      newErrors.address = 'Địa chỉ là bắt buộc';
+      newErrors.address = 'Address is required';
     }
 
     // Marital Status validation
     if (!formData.maritalStatus) {
-      newErrors.maritalStatus = 'Tình trạng hôn nhân là bắt buộc';
+      newErrors.maritalStatus = 'Marital status is required';
     }
 
     // Phone Number validation
     if (!formData.phoneNumber) {
-      newErrors.phoneNumber = 'Số điện thoại là bắt buộc';
+      newErrors.phoneNumber = 'Phone number is required';
     } else if (!/^(\+84|84|0)[0-9]{9}$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = 'Số điện thoại không hợp lệ (VD: 0123456789)';
+      newErrors.phoneNumber = 'Invalid phone number (e.g., 0123456789)';
     }
 
     // Occupation validation
     if (!formData.occupation.trim()) {
-      newErrors.occupation = 'Nghề nghiệp là bắt buộc';
+      newErrors.occupation = 'Occupation is required';
     }
 
     // Salary validation
     if (!formData.salary) {
-      newErrors.salary = 'Lương là bắt buộc';
+      newErrors.salary = 'Salary is required';
     } else if (isNaN(Number(formData.salary)) || Number(formData.salary) <= 0) {
-      newErrors.salary = 'Lương phải là số dương';
+      newErrors.salary = 'Salary must be a positive number';
     }
 
     // CIC Rank validation
     if (!formData.cicRank) {
-      newErrors.cicRank = 'CIC Rank là bắt buộc';
+      newErrors.cicRank = 'CIC Rank is required';
     }
 
     setErrors(newErrors);
@@ -182,7 +182,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
       
       setPrediction(result);
     } catch (error) {
-      alert('Có lỗi xảy ra khi dự đoán. Vui lòng thử lại.');
+      alert('An error occurred during prediction. Please try again.');
     } finally {
       setIsPredicting(false);
     }
@@ -195,9 +195,9 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
       return;
     }
 
-    // Kiểm tra xem có kết quả phân tích AI chưa (chỉ áp dụng cho create mode)
+    // Check if AI analysis result exists (only for create mode)
     if (mode === 'create' && !prediction) {
-      alert('Vui lòng thực hiện phân tích tín dụng trước khi lưu thông tin!');
+      alert('Please perform credit analysis before saving information!');
       return;
     }
 
@@ -221,7 +221,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
 
       if (response.ok) {
         const result = await response.json();
-        const message = mode === 'update' ? 'Cập nhật người dùng thành công!' : 'Tạo người dùng thành công!';
+        const message = mode === 'update' ? 'User updated successfully!' : 'User created successfully!';
         alert(message);
         
         if (mode === 'update') {
@@ -231,10 +231,10 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
         }
       } else {
         const error = await response.json();
-        alert(`Lỗi: ${error.error}`);
+        alert(`Error: ${error.error}`);
       }
     } catch (error) {
-      const message = mode === 'update' ? 'Có lỗi xảy ra khi cập nhật người dùng' : 'Có lỗi xảy ra khi tạo người dùng';
+      const message = mode === 'update' ? 'An error occurred while updating user' : 'An error occurred while creating user';
       alert(message);
     } finally {
       setIsSubmitting(false);
@@ -275,20 +275,20 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
 
   return (
     <div className="flex flex-col md:flex-row gap-6 w-full justify-center items-start">
-      {/* Form bên trái */}
+      {/* Left Form */}
       <div className="w-full bg-white rounded-xl p-8 shadow-md border border-gray-200" style={{ minWidth: '350px' }}>
         {/* Header with buttons for update mode */}
         {mode === 'update' && (
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-gray-800">
-              Chỉnh sửa thông tin người dùng
+              Edit User Information
             </h2>
             <div className="flex space-x-2">
               <button
                 onClick={handleCancel}
                 className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg transition-colors"
               >
-                Hủy
+                Cancel
               </button>
             </div>
           </div>
@@ -316,7 +316,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
           {/* Fullname */}
           <div>
             <label htmlFor="fullname" className="block text-sm font-medium text-gray-700 mb-2">
-              Họ và tên *
+              Full Name *
             </label>
             <input
               type="text"
@@ -326,7 +326,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
               className={`w-full px-3 py-2 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 ${
                 errors.fullname ? 'border-red-500' : 'border-gray-300'
               } text-gray-900`}
-              placeholder="Nguyễn Văn A"
+              placeholder="John Doe"
             />
             {errors.fullname && <p className="mt-1 text-sm text-red-500">{errors.fullname}</p>}
           </div>
@@ -334,7 +334,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
           {/* Birthdate */}
           <div>
             <label htmlFor="birthdate" className="block text-sm font-medium text-gray-700 mb-2">
-              Ngày sinh *
+              Birth Date *
             </label>
             <input
               type="date"
@@ -351,7 +351,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
           {/* ID Number */}
           <div>
             <label htmlFor="idNumber" className="block text-sm font-medium text-gray-700 mb-2">
-              Số CMND/CCCD *
+              ID Number *
             </label>
             <input
               type="text"
@@ -369,7 +369,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
           {/* Address */}
           <div>
             <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
-              Địa chỉ *
+              Address *
             </label>
             <textarea
               id="address"
@@ -379,7 +379,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
               className={`w-full px-3 py-2 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 ${
                 errors.address ? 'border-red-500' : 'border-gray-300'
               } text-gray-900`}
-              placeholder="123 Nguyễn Trãi, Hà Nội"
+              placeholder="123 Main Street, City, Country"
             />
             {errors.address && <p className="mt-1 text-sm text-red-500">{errors.address}</p>}
           </div>
@@ -387,7 +387,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
           {/* Marital Status */}
           <div>
             <label htmlFor="maritalStatus" className="block text-sm font-medium text-gray-700 mb-2">
-              Tình trạng hôn nhân *
+              Marital Status *
             </label>
             <select
               id="maritalStatus"
@@ -397,7 +397,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
                 errors.maritalStatus ? 'border-red-500' : 'border-gray-300'
               } text-gray-900`}
             >
-              <option value="">Chọn tình trạng hôn nhân</option>
+              <option value="">Select marital status</option>
               {maritalStatusOptions.map(option => (
                 <option key={option.value} value={option.value}>
                   {option.label}
@@ -410,7 +410,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
           {/* Phone Number */}
           <div>
             <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-2">
-              Số điện thoại *
+              Phone Number *
             </label>
             <input
               type="tel"
@@ -428,7 +428,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
           {/* Occupation */}
           <div>
             <label htmlFor="occupation" className="block text-sm font-medium text-gray-700 mb-2">
-              Nghề nghiệp *
+              Occupation *
             </label>
             <input
               type="text"
@@ -446,7 +446,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
           {/* Salary */}
           <div>
             <label htmlFor="salary" className="block text-sm font-medium text-gray-700 mb-2">
-              Lương (VND) *
+              Salary (VND) *
             </label>
             <input
               type="number"
@@ -475,7 +475,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
                 errors.cicRank ? 'border-red-500' : 'border-gray-300'
               } text-gray-900`}
             >
-              <option value="">Chọn CIC Rank</option>
+              <option value="">Select CIC Rank</option>
               {cicRankOptions.map(option => (
                 <option key={option.value} value={option.value}>
                   {option.label}
@@ -493,7 +493,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
               disabled={isPredicting || isSubmitting}
               className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-full font-medium transition-colors text-lg shadow-md"
             >
-              {isPredicting ? 'Đang phân tích...' : 'Phân tích tín dụng'}
+              {isPredicting ? 'Analyzing...' : 'Credit Analysis'}
             </button>
             <button
               type="submit"
@@ -504,20 +504,20 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
                   : 'bg-green-500 hover:bg-green-600 text-white'
               }`}
             >
-              {isSubmitting ? 'Đang xử lý...' : mode === 'update' ? 'Cập nhật người dùng' : 'Lưu thông tin'}
+              {isSubmitting ? 'Processing...' : mode === 'update' ? 'Update User' : 'Save Information'}
             </button>
           </div>
         </form>
       </div>
       
-      {/* Kết quả bên phải */}
+      {/* Right Results */}
       <div className="w-full md:w-1/2 bg-white rounded-xl p-8 shadow-md border border-gray-200 flex flex-col" style={{ minWidth: '350px' }}>
-        <h2 className="text-xl font-bold mb-4 text-green-600">Kết quả phân tích tín dụng</h2>
+        <h2 className="text-xl font-bold mb-4 text-green-600">Credit Analysis Results</h2>
         
         {isPredicting ? (
           <div className="flex flex-col items-center justify-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mb-4"></div>
-            <p className="text-gray-600">Đang phân tích thông tin...</p>
+            <p className="text-gray-600">Analyzing information...</p>
           </div>
         ) : prediction ? (
           <div className="space-y-4">
@@ -535,15 +535,15 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
 
             {/* Credit Limit */}
             <div className="bg-gray-50 rounded-lg p-4 text-center">
-              <p className="text-sm text-gray-600 mb-1">Hạn mức tín dụng</p>
+              <p className="text-sm text-gray-600 mb-1">Credit Limit</p>
               <p className="text-2xl font-bold text-green-600">
-                {prediction.creditLimit.toLocaleString('vi-VN')} VND
+                {prediction.creditLimit.toLocaleString('en-US')} VND
               </p>
             </div>
 
             {/* Confidence Score */}
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-600 mb-2">Độ tin cậy</p>
+              <p className="text-sm text-gray-600 mb-2">Confidence Level</p>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div 
                   className="bg-green-500 h-2 rounded-full transition-all duration-500"
@@ -557,7 +557,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
 
             {/* Reasons */}
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm font-semibold text-gray-700 mb-2">Lý do được chấp thuận:</p>
+              <p className="text-sm font-semibold text-gray-700 mb-2">Approval Reasons:</p>
               <ul className="space-y-1">
                 {prediction.reasons.map((reason, index) => (
                   <li key={index} className="text-sm text-gray-600 flex items-start">
@@ -574,7 +574,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
               disabled={isSubmitting}
               className="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-full font-medium transition-colors text-lg shadow-md"
             >
-              {isSubmitting ? 'Đang xử lý...' : mode === 'update' ? 'Cập nhật thông tin' : 'Đăng ký thẻ tín dụng'}
+              {isSubmitting ? 'Processing...' : mode === 'update' ? 'Update Information' : 'Apply for Credit Card'}
             </button>
           </div>
         ) : (
@@ -584,8 +584,8 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <p className="text-gray-600 mb-2">Chưa có kết quả phân tích</p>
-            <p className="text-sm text-gray-500">Vui lòng điền đầy đủ thông tin và nhấn "Phân tích tín dụng"</p>
+            <p className="text-gray-600 mb-2">No analysis results yet</p>
+            <p className="text-sm text-gray-500">Please fill in all information and click "Credit Analysis"</p>
           </div>
         )}
       </div>

@@ -105,11 +105,11 @@ export async function getDashboardStats() {
       .from(users)
       .where(sql`${users.creditLimit} is not null`);
 
-    // Users analyzed by AI
+    // Users được cấp thẻ (cardType != null và != 'Reject')
     const analyzedUsers = await db
       .select({ count: sql<number>`count(*)` })
       .from(users)
-      .where(sql`${users.cardType} is not null`);
+      .where(sql`${users.cardType} is not null and ${users.cardType} != 'Reject'`);
 
     return {
       totalUsers: totalUsers[0]?.count || 0,

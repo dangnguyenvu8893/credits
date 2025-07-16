@@ -1,5 +1,7 @@
 import { getDashboardStats } from '@/lib/db/queries';
 import Link from 'next/link';
+import PieChart from './components/pie-chart';
+import CicRankBarChart from './components/cic-rank-bar-chart';
 
 // Force dynamic rendering to prevent build issues
 export const dynamic = 'force-dynamic';
@@ -89,7 +91,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Đã Phân Tích AI</p>
+                <p className="text-sm font-medium text-gray-500">Số Người Được Cấp Thẻ</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.analyzedUsers}</p>
                 <p className="text-sm text-gray-500">
                   {stats.totalUsers > 0 ? Math.round((stats.analyzedUsers / stats.totalUsers) * 100) : 0}% tổng số
@@ -138,53 +140,25 @@ export default async function Home() {
           {/* Users by Card Type */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Phân Bố Theo Loại Thẻ</h3>
-            <div className="space-y-3">
-              {stats.usersByCardType.length > 0 ? (
-                stats.usersByCardType.map((item) => (
-                  <div key={item.cardType} className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className={`w-4 h-4 rounded-full ${getCardTypeColor(item.cardType || '')} mr-3`}></div>
-                      <span className="text-sm font-medium text-gray-700">{item.cardType}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="text-sm font-bold text-gray-900">{item.count}</span>
-                      <span className="text-sm text-gray-500 ml-2">
-                        ({stats.analyzedUsers > 0 ? Math.round((item.count / stats.analyzedUsers) * 100) : 0}%)
-                      </span>
-                    </div>
-                  </div>
-                ))
-              ) : (
+            {stats.usersByCardType.length > 0 ? (
+              <PieChart data={stats.usersByCardType} totalUsers={stats.analyzedUsers} />
+            ) : (
+              <div className="flex items-center justify-center h-64">
                 <p className="text-gray-500 text-sm">Chưa có dữ liệu phân tích</p>
-              )}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Users by CIC Rank */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Phân Bố Theo CIC Rank</h3>
-            <div className="space-y-3">
-              {stats.usersByCicRank.length > 0 ? (
-                stats.usersByCicRank.map((item) => (
-                  <div key={item.cicRank} className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getCicRankColor(item.cicRank)} mr-3`}>
-                        {item.cicRank}
-                      </span>
-                      <span className="text-sm font-medium text-gray-700">Rank {item.cicRank}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="text-sm font-bold text-gray-900">{item.count}</span>
-                      <span className="text-sm text-gray-500 ml-2">
-                        ({stats.totalUsers > 0 ? Math.round((item.count / stats.totalUsers) * 100) : 0}%)
-                      </span>
-                    </div>
-                  </div>
-                ))
-              ) : (
+            {stats.usersByCicRank.length > 0 ? (
+              <CicRankBarChart data={stats.usersByCicRank} totalUsers={stats.totalUsers} />
+            ) : (
+              <div className="flex items-center justify-center h-64">
                 <p className="text-gray-500 text-sm">Chưa có dữ liệu</p>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
 

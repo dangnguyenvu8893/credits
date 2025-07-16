@@ -16,8 +16,8 @@ export default async function UsersPage() {
         return 'bg-gradient-to-r from-yellow-500 to-orange-500';
       case 'Silver':
         return 'bg-gradient-to-r from-gray-400 to-gray-600';
-      case 'Standard':
-        return 'bg-gradient-to-r from-blue-500 to-green-500';
+      case 'Reject':
+        return 'bg-gradient-to-r from-red-500 to-red-700';
       default:
         return 'bg-gray-200';
     }
@@ -101,11 +101,6 @@ export default async function UsersPage() {
                           <div className="text-sm text-gray-900">
                             Credit Limit: {formatCurrency(user.creditLimit)}
                           </div>
-                          {user.confidence && (
-                            <div className="text-sm text-gray-600">
-                              Confidence: {user.confidence}%
-                            </div>
-                          )}
                           {user.predictedAt && (
                             <div className="text-xs text-gray-500">
                               Analyzed: {new Date(user.predictedAt).toLocaleDateString('en-US')}

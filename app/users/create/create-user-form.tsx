@@ -46,6 +46,74 @@ const cicRankOptions = [
   { value: 'D', label: 'D - Poor' },
 ];
 
+const occupationOptions = [
+  { value: 'Bác sĩ', label: 'Bác sĩ' },
+  { value: 'Bác sĩ nha khoa', label: 'Bác sĩ nha khoa' },
+  { value: 'Chuyên viên AI', label: 'Chuyên viên AI' },
+  { value: 'Chuyên viên Content', label: 'Chuyên viên Content' },
+  { value: 'Chuyên viên Data', label: 'Chuyên viên Data' },
+  { value: 'Chuyên viên Data Analyst', label: 'Chuyên viên Data Analyst' },
+  { value: 'Chuyên viên HR', label: 'Chuyên viên HR' },
+  { value: 'Chuyên viên Logistics', label: 'Chuyên viên Logistics' },
+  { value: 'Chuyên viên Marketing', label: 'Chuyên viên Marketing' },
+  { value: 'Chuyên viên PR', label: 'Chuyên viên PR' },
+  { value: 'Chuyên viên QA', label: 'Chuyên viên QA' },
+  { value: 'Chuyên viên SEO', label: 'Chuyên viên SEO' },
+  { value: 'Chuyên viên bảo mật', label: 'Chuyên viên bảo mật' },
+  { value: 'Chuyên viên chăm sóc khách hàng', label: 'Chuyên viên chăm sóc khách hàng' },
+  { value: 'Chuyên viên chăm sóc sắc đẹp', label: 'Chuyên viên chăm sóc sắc đẹp' },
+  { value: 'Chuyên viên content', label: 'Chuyên viên content' },
+  { value: 'Chuyên viên kinh doanh', label: 'Chuyên viên kinh doanh' },
+  { value: 'Chuyên viên logistics', label: 'Chuyên viên logistics' },
+  { value: 'Chuyên viên marketing', label: 'Chuyên viên marketing' },
+  { value: 'Chuyên viên nghiên cứu AI', label: 'Chuyên viên nghiên cứu AI' },
+  { value: 'Chuyên viên nghiên cứu thị trường', label: 'Chuyên viên nghiên cứu thị trường' },
+  { value: 'Chuyên viên pháp lý', label: 'Chuyên viên pháp lý' },
+  { value: 'Chuyên viên phát triển backend', label: 'Chuyên viên phát triển backend' },
+  { value: 'Chuyên viên phát triển frontend', label: 'Chuyên viên phát triển frontend' },
+  { value: 'Chuyên viên phát triển game', label: 'Chuyên viên phát triển game' },
+  { value: 'Chuyên viên phát triển mobile', label: 'Chuyên viên phát triển mobile' },
+  { value: 'Chuyên viên phát triển sản phẩm', label: 'Chuyên viên phát triển sản phẩm' },
+  { value: 'Chuyên viên quản lý chất lượng', label: 'Chuyên viên quản lý chất lượng' },
+  { value: 'Chuyên viên thiết kế UI/UX', label: 'Chuyên viên thiết kế UI/UX' },
+  { value: 'Chuyên viên thiết kế nội thất', label: 'Chuyên viên thiết kế nội thất' },
+  { value: 'Chuyên viên thiết kế web', label: 'Chuyên viên thiết kế web' },
+  { value: 'Chuyên viên tài chính', label: 'Chuyên viên tài chính' },
+  { value: 'Chuyên viên tư vấn tài chính', label: 'Chuyên viên tư vấn tài chính' },
+  { value: 'Chuyên viên xuất nhập khẩu', label: 'Chuyên viên xuất nhập khẩu' },
+  { value: 'Designer', label: 'Designer' },
+  { value: 'Giám đốc kinh doanh', label: 'Giám đốc kinh doanh' },
+  { value: 'Giám đốc sản xuất', label: 'Giám đốc sản xuất' },
+  { value: 'Giáo viên', label: 'Giáo viên' },
+  { value: 'Giáo viên mầm non', label: 'Giáo viên mầm non' },
+  { value: 'Giáo viên tiểu học', label: 'Giáo viên tiểu học' },
+  { value: 'Kế toán trưởng', label: 'Kế toán trưởng' },
+  { value: 'Kỹ sư cơ khí', label: 'Kỹ sư cơ khí' },
+  { value: 'Kỹ sư hóa học', label: 'Kỹ sư hóa học' },
+  { value: 'Kỹ sư phần mềm', label: 'Kỹ sư phần mềm' },
+  { value: 'Kỹ sư xây dựng', label: 'Kỹ sư xây dựng' },
+  { value: 'Kỹ sư điện', label: 'Kỹ sư điện' },
+  { value: 'Luật sư', label: 'Luật sư' },
+  { value: 'Lập trình viên', label: 'Lập trình viên' },
+  { value: 'Nhân viên Marketing', label: 'Nhân viên Marketing' },
+  { value: 'Nhân viên bán hàng', label: 'Nhân viên bán hàng' },
+  { value: 'Nhân viên kế toán', label: 'Nhân viên kế toán' },
+  { value: 'Nhân viên thu ngân', label: 'Nhân viên thu ngân' },
+  { value: 'Nhân viên thư viện', label: 'Nhân viên thư viện' },
+  { value: 'Nhân viên văn phòng', label: 'Nhân viên văn phòng' },
+  { value: 'Quản lý dự án', label: 'Quản lý dự án' },
+  { value: 'Sinh viên', label: 'Sinh viên' },
+  { value: 'Thiết kế web', label: 'Thiết kế web' },
+  { value: 'Thiết kế đồ họa', label: 'Thiết kế đồ họa' },
+  { value: 'Thợ cơ khí', label: 'Thợ cơ khí' },
+  { value: 'Thợ may', label: 'Thợ may' },
+  { value: 'Thợ sửa máy tính', label: 'Thợ sửa máy tính' },
+  { value: 'Thợ sửa xe', label: 'Thợ sửa xe' },
+  { value: 'Thợ điện', label: 'Thợ điện' },
+  { value: 'Y tá', label: 'Y tá' },
+  { value: 'Y tá trưởng', label: 'Y tá trưởng' },
+];
+
 interface UserFormProps {
   user?: User;
   mode?: 'create' | 'update';
@@ -78,10 +146,18 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
       // Load existing AI prediction if available
       if (user.cardType && user.creditLimit) {
         setPrediction({
-          cardType: user.cardType,
-          creditLimit: user.creditLimit,
-          confidence: (user.confidence || 0) / 100,
-          reasons: user.predictionReasons ? JSON.parse(user.predictionReasons) : [],
+          data: {
+            age: new Date().getFullYear() - new Date(user.birthdate).getFullYear(),
+            cic: user.cicRank,
+            job: user.occupation,
+            married: user.maritalStatus,
+            predicted_card_type: user.cardType,
+            predicted_credit_limit: user.creditLimit,
+            predicted_credit_limit_formatted: user.creditLimit.toLocaleString('en-US'),
+            salary: user.salary,
+            success: true,
+          },
+          success: true,
         });
       }
     }
@@ -167,20 +243,23 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
     try {
       // Try real AI API first, fallback to mock if fails
       let result: PredictionResponse;
+      const age = new Date().getFullYear() - new Date(formData.birthdate).getFullYear();
       try {
         result = await AIService.predict({
-          ...formData,
+          age: age,
+          married: formData.maritalStatus,
           salary: parseInt(formData.salary),
+          cic: formData.cicRank,
+          job: formData.occupation,
         });
+        setPrediction(result);
       } catch (error) {
         console.log('AI API failed, using mock data:', error);
-        result = await AIService.predictMock({
-          ...formData,
-          salary: parseInt(formData.salary),
-        });
+        // result = await AIService.predict({
+        //   ...formData,
+        //   salary: parseInt(formData.salary),
+        // });
       }
-      
-      setPrediction(result);
     } catch (error) {
       alert('An error occurred during prediction. Please try again.');
     } finally {
@@ -430,16 +509,21 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
             <label htmlFor="occupation" className="block text-sm font-medium text-gray-700 mb-2">
               Occupation *
             </label>
-            <input
-              type="text"
+            <select
               id="occupation"
               value={formData.occupation}
               onChange={(e) => handleInputChange('occupation', e.target.value)}
               className={`w-full px-3 py-2 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 ${
                 errors.occupation ? 'border-red-500' : 'border-gray-300'
               } text-gray-900`}
-              placeholder="Software Engineer"
-            />
+            >
+              <option value="">Select occupation</option>
+              {occupationOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
             {errors.occupation && <p className="mt-1 text-sm text-red-500">{errors.occupation}</p>}
           </div>
 
@@ -524,48 +608,51 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
             {/* Card Type Badge */}
             <div className="text-center">
               <div className={`inline-block px-4 py-2 rounded-full text-white font-bold text-lg ${
-                prediction.cardType === 'Platinum' ? 'bg-gradient-to-r from-purple-500 to-pink-500' :
-                prediction.cardType === 'Gold' ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
-                prediction.cardType === 'Silver' ? 'bg-gradient-to-r from-gray-400 to-gray-600' :
+                prediction.data.predicted_card_type === 'Reject' ? 'bg-gradient-to-r from-red-500 to-red-700' :
+                prediction.data.predicted_card_type === 'Platinum' ? 'bg-gradient-to-r from-purple-500 to-pink-500' :
+                prediction.data.predicted_card_type === 'Gold' ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
+                prediction.data.predicted_card_type === 'Silver' ? 'bg-gradient-to-r from-gray-400 to-gray-600' :
                 'bg-gradient-to-r from-blue-500 to-green-500'
               }`}>
-                {prediction.cardType}
+                {prediction.data.predicted_card_type}
               </div>
             </div>
 
             {/* Credit Limit */}
             <div className="bg-gray-50 rounded-lg p-4 text-center">
               <p className="text-sm text-gray-600 mb-1">Credit Limit</p>
-              <p className="text-2xl font-bold text-green-600">
-                {prediction.creditLimit.toLocaleString('en-US')} VND
+              <p className={`text-2xl font-bold ${
+                prediction.data.predicted_card_type === 'Reject' ? 'text-red-600' : 'text-green-600'
+              }`}>
+                {prediction.data.predicted_card_type === 'Reject' ? '0 VND' : `${prediction.data.predicted_credit_limit_formatted} VND`}
               </p>
             </div>
 
-            {/* Confidence Score */}
+            {/* User Information Summary */}
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-600 mb-2">Confidence Level</p>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-green-500 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${prediction.confidence * 100}%` }}
-                ></div>
+              <p className="text-sm font-semibold text-gray-700 mb-2">Analysis Summary:</p>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="flex justify-between">
+                  <span>Age:</span>
+                  <span className="font-medium">{prediction.data.age} years</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Job:</span>
+                  <span className="font-medium">{prediction.data.job}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Salary:</span>
+                  <span className="font-medium">{prediction.data.salary.toLocaleString('en-US')} VND</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>CIC Rank:</span>
+                  <span className="font-medium">{prediction.data.cic}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Marital Status:</span>
+                  <span className="font-medium">{prediction.data.married}</span>
+                </div>
               </div>
-              <p className="text-sm text-gray-600 mt-1">
-                {Math.round(prediction.confidence * 100)}%
-              </p>
-            </div>
-
-            {/* Reasons */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm font-semibold text-gray-700 mb-2">Approval Reasons:</p>
-              <ul className="space-y-1">
-                {prediction.reasons.map((reason, index) => (
-                  <li key={index} className="text-sm text-gray-600 flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    {reason}
-                  </li>
-                ))}
-              </ul>
             </div>
 
             {/* Action Button */}

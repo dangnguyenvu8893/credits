@@ -1,6 +1,7 @@
 import { getUsers } from '@/lib/db/queries';
 import Link from 'next/link';
 import UserActions from './users/user-actions';
+import EnvDisplay from './components/env-display';
 
 // This will be replaced by 'use cache' soon
 export const dynamic = 'force-dynamic';

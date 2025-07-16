@@ -81,23 +81,20 @@ export async function PUT(
     let aiPrediction = null;
     if (body.getPrediction) {
       try {
+        const birthdate = new Date(existingUser[0].birthdate);
+        const age = new Date().getFullYear() - birthdate.getFullYear();
+
         const userData = {
-          email: body.email || existingUser[0].email,
-          fullname: body.fullname || existingUser[0].fullname,
-          birthdate: body.birthdate || existingUser[0].birthdate.toString(),
-          idNumber: body.idNumber || existingUser[0].idNumber,
-          address: body.address || existingUser[0].address,
-          maritalStatus: body.maritalStatus || existingUser[0].maritalStatus,
-          phoneNumber: body.phoneNumber || existingUser[0].phoneNumber,
-          occupation: body.occupation || existingUser[0].occupation,
+          age: age,
+          married: body.maritalStatus || existingUser[0].maritalStatus,
           salary: body.salary !== undefined ? body.salary : existingUser[0].salary,
-          cicRank: body.cicRank || existingUser[0].cicRank,
+          cic: body.cicRank || existingUser[0].cicRank,
+          job: body.occupation || existingUser[0].occupation,
         };
         
-        aiPrediction = await AIService.predictMock(userData);
+        aiPrediction = await AIService.predict(userData);
       } catch (error) {
         console.error('Error getting AI prediction:', error);
-        // Continue without prediction if AI fails
       }
     }
 
@@ -117,10 +114,8 @@ export async function PUT(
 
     // Add AI prediction results if available
     if (aiPrediction) {
-      updateData.cardType = aiPrediction.cardType;
-      updateData.creditLimit = aiPrediction.creditLimit;
-      updateData.confidence = Math.round(aiPrediction.confidence * 100);
-      updateData.predictionReasons = JSON.stringify(aiPrediction.reasons);
+      updateData.cardType = aiPrediction.data.predicted_card_type;
+      updateData.creditLimit = aiPrediction.data.predicted_credit_limit;
       updateData.predictedAt = new Date();
     }
 

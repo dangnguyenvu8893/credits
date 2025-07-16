@@ -19,7 +19,7 @@ const sslConfig = process.env.NODE_ENV === 'production'
   : true;
 
 export const client = postgres(postgresUrl, {
-  ssl: true,
+  ssl: false,
   max: 1,
   idle_timeout: 20,
   connect_timeout: 10,

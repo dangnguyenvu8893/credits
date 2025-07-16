@@ -63,17 +63,12 @@ export async function POST(request: NextRequest) {
     let aiPrediction = null;
     if (body.getPrediction) {
       try {
-        aiPrediction = await AIService.predictMock({
-          email: body.email,
-          fullname: body.fullname,
-          birthdate: body.birthdate,
-          idNumber: body.idNumber,
-          address: body.address,
-          maritalStatus: body.maritalStatus,
-          phoneNumber: body.phoneNumber,
-          occupation: body.occupation,
+        aiPrediction = await AIService.predict({
+          age: new Date().getFullYear() - new Date(body.birthdate).getFullYear(),
+          married: body.maritalStatus,
           salary: body.salary,
-          cicRank: body.cicRank,
+          cic: body.cicRank,
+          job: body.occupation,
         });
       } catch (error) {
         console.error('Error getting AI prediction:', error);
@@ -92,14 +87,9 @@ export async function POST(request: NextRequest) {
       occupation: body.occupation,
       salary: body.salary,
       cicRank: body.cicRank,
-      // Add AI prediction results if available
-      ...(aiPrediction && {
-        cardType: aiPrediction.cardType,
-        creditLimit: aiPrediction.creditLimit,
-        confidence: Math.round(aiPrediction.confidence * 100),
-        predictionReasons: JSON.stringify(aiPrediction.reasons),
-        predictedAt: new Date(),
-      }),
+      cardType: aiPrediction?.data?.predicted_card_type,
+      creditLimit: aiPrediction?.data?.predicted_credit_limit,
+      predictedAt: new Date(),
     };
 
     const newUser = await createUser(userData);

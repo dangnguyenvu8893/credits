@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { User } from '@/lib/db/schema';
 import { AIService, PredictionResponse } from '@/lib/services/ai-service';
 import ImageUpload from '@/app/components/image-upload';
+import EligibilityChart from '@/app/components/eligibility-chart';
 
 interface FormData {
   email: string;
@@ -667,6 +668,15 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
                 {prediction.data.predicted_card_type === 'Reject' ? '0 VND' : `${prediction.data.predicted_credit_limit_formatted} VND`}
               </p>
             </div>
+
+            {/* Eligibility Chart */}
+            <EligibilityChart
+              age={prediction.data.age}
+              salary={prediction.data.salary}
+              cicRank={prediction.data.cic}
+              maritalStatus={prediction.data.married}
+              occupation={prediction.data.job}
+            />
 
             {/* User Information Summary */}
             <div className="bg-gray-50 rounded-lg p-4">

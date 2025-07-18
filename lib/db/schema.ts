@@ -13,6 +13,8 @@ export const users = pgTable('users', {
   occupation: varchar('occupation', { length: 255 }).notNull(),
   salary: integer('salary').notNull(), // VND
   cicRank: varchar('cic_rank', { length: 50 }).notNull(),
+  // Profile Image
+  profileImage: text('profile_image'), // Store base64 encoded image data
   // AI Prediction Results
   cardType: varchar('card_type', { length: 50 }),
   creditLimit: integer('credit_limit'),

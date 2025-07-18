@@ -60,11 +60,19 @@ export default async function UsersPage() {
                     <td className="px-6 py-4">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
-                          <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
-                            <span className="text-sm font-medium text-green-800">
-                              {user.fullname.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
+                          {user.profileImage ? (
+                            <img
+                              src={user.profileImage}
+                              alt={`${user.fullname} profile`}
+                              className="h-10 w-10 rounded-full object-cover border-2 border-gray-200"
+                            />
+                          ) : (
+                            <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                              <span className="text-sm font-medium text-green-800">
+                                {user.fullname.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                          )}
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">

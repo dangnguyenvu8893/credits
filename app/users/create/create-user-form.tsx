@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { User } from '@/lib/db/schema';
 import { AIService, PredictionResponse } from '@/lib/services/ai-service';
+import ImageUpload from '@/app/components/image-upload';
 
 interface FormData {
   email: string;
@@ -17,6 +18,7 @@ interface FormData {
   occupation: string;
   salary: string;
   cicRank: string;
+  profileImage: string | null;
 }
 
 const initialFormData: FormData = {
@@ -30,6 +32,7 @@ const initialFormData: FormData = {
   occupation: '',
   salary: '',
   cicRank: '',
+  profileImage: null,
 };
 
 const maritalStatusOptions = [
@@ -141,6 +144,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
         occupation: user.occupation,
         salary: user.salary.toString(),
         cicRank: user.cicRank,
+        profileImage: user.profileImage,
       });
 
       // Load existing AI prediction if available
@@ -293,6 +297,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
         body: JSON.stringify({
           ...formData,
           salary: parseInt(formData.salary),
+          profileImage: formData.profileImage,
           // Include AI prediction if available
           getPrediction: !!prediction,
         }),
@@ -343,6 +348,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
           occupation: user.occupation,
           salary: user.salary.toString(),
           cicRank: user.cicRank,
+          profileImage: user.profileImage,
         });
       }
     } else {
@@ -391,6 +397,12 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
             />
             {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
           </div>
+
+          {/* Profile Image */}
+          <ImageUpload
+            onImageChange={(base64Image) => handleInputChange('profileImage', base64Image || '')}
+            currentImage={formData.profileImage}
+          />
 
           {/* Fullname */}
           <div>

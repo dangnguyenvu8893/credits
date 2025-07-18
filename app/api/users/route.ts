@@ -87,6 +87,7 @@ export async function POST(request: NextRequest) {
       occupation: body.occupation,
       salary: body.salary,
       cicRank: body.cicRank,
+      profileImage: body.profileImage || null,
       cardType: aiPrediction?.data?.predicted_card_type,
       creditLimit: aiPrediction?.data?.predicted_credit_limit,
       predictedAt: new Date(),

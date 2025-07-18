@@ -111,6 +111,7 @@ export async function PUT(
     if (body.occupation) updateData.occupation = body.occupation;
     if (body.salary !== undefined) updateData.salary = body.salary;
     if (body.cicRank) updateData.cicRank = body.cicRank;
+    if (body.profileImage !== undefined) updateData.profileImage = body.profileImage;
 
     // Add AI prediction results if available
     if (aiPrediction) {

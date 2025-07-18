@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface ImageUploadProps {
   onImageChange: (base64Image: string | null) => void;
@@ -12,6 +12,11 @@ export default function ImageUpload({ onImageChange, currentImage, className = '
   const [previewImage, setPreviewImage] = useState<string | null>(currentImage || null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Update preview image when currentImage prop changes
+  useEffect(() => {
+    setPreviewImage(currentImage || null);
+  }, [currentImage]);
 
   const resizeImage = (file: File): Promise<string> => {
     return new Promise((resolve) => {

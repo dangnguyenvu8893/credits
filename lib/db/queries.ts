@@ -111,13 +111,34 @@ export async function getDashboardStats() {
       .from(users)
       .where(sql`${users.cardType} is not null and ${users.cardType} != 'Reject'`);
 
+    // Users bị reject
+    const rejectedUsers = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(users)
+      .where(sql`${users.cardType} = 'Reject'`);
+
+    // Users đang đợi duyệt (chưa có cardType)
+    const pendingUsers = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(users)
+      .where(sql`${users.cardType} is null`);
+
+    // Users đã được duyệt tháng này
+    const approvedThisMonth = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(users)
+      .where(sql`${users.cardType} is not null and ${users.cardType} != 'Reject' and ${users.predictedAt} >= date_trunc('month', current_date)`);
+
     return {
       totalUsers: totalUsers[0]?.count || 0,
       usersByCardType: usersByCardType,
       usersByCicRank: usersByCicRank,
       totalCreditLimit: totalCreditLimit[0]?.total || 0,
       avgCreditLimit: avgCreditLimit[0]?.average || 0,
-      analyzedUsers: analyzedUsers[0]?.count || 0
+      analyzedUsers: analyzedUsers[0]?.count || 0,
+      rejectedUsers: rejectedUsers[0]?.count || 0,
+      pendingUsers: pendingUsers[0]?.count || 0,
+      approvedThisMonth: approvedThisMonth[0]?.count || 0
     };
   } catch (error) {
     console.error('Error fetching dashboard stats:', error);
@@ -127,7 +148,10 @@ export async function getDashboardStats() {
       usersByCicRank: [],
       totalCreditLimit: 0,
       avgCreditLimit: 0,
-      analyzedUsers: 0
+      analyzedUsers: 0,
+      rejectedUsers: 0,
+      pendingUsers: 0,
+      approvedThisMonth: 0
     };
   }
 }

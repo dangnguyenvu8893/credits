@@ -325,11 +325,38 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
     }
   };
 
-  const handleInputChange = (field: keyof FormData, value: string) => {
+  const handleInputChange = (field: keyof FormData, value: string | null) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!user || mode !== 'update') {
+      return;
+    }
+
+    const confirmed = window.confirm('Are you sure you want to delete this user? This action cannot be undone.');
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/users/${user.id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        alert('User deleted successfully!');
+        router.push('/users'); // Redirect to users list
+      } else {
+        const error = await response.json();
+        alert(`Error: ${error.error}`);
+      }
+    } catch (error) {
+      alert('An error occurred while deleting user');
     }
   };
 
@@ -370,10 +397,11 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
             </h2>
             <div className="flex space-x-2">
               <button
-                onClick={handleCancel}
-                className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg transition-colors"
+                type="button"
+                onClick={handleDelete}
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
               >
-                Cancel
+                Delete User
               </button>
             </div>
           </div>
@@ -400,7 +428,7 @@ export default function UserForm({ user, mode = 'create' }: UserFormProps) {
 
           {/* Profile Image */}
           <ImageUpload
-            onImageChange={(base64Image) => handleInputChange('profileImage', base64Image || '')}
+            onImageChange={(base64Image) => handleInputChange('profileImage', base64Image)}
             currentImage={formData.profileImage}
           />
 

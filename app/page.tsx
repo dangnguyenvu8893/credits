@@ -135,6 +135,69 @@ export default async function Home() {
           </div>
         </div>
 
+        {/* Additional Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {/* Rejected Users */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Người Bị Từ Chối</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.rejectedUsers}</p>
+                <p className="text-sm text-gray-500">
+                  {stats.totalUsers > 0 ? Math.round((stats.rejectedUsers / stats.totalUsers) * 100) : 0}% tổng số
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Pending Users */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Đang Đợi Duyệt</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.pendingUsers}</p>
+                <p className="text-sm text-gray-500">
+                  {stats.totalUsers > 0 ? Math.round((stats.pendingUsers / stats.totalUsers) * 100) : 0}% tổng số
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Approved This Month */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Được Duyệt Tháng Này</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.approvedThisMonth}</p>
+                <p className="text-sm text-gray-500">
+                  {stats.analyzedUsers > 0 ? Math.round((stats.approvedThisMonth / stats.analyzedUsers) * 100) : 0}% tổng số được duyệt
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Users by Card Type */}
